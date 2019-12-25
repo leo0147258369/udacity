@@ -13153,10 +13153,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Imports here</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
@@ -13198,25 +13202,29 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Define your transforms for the training, validation, and testing sets</span>
 <span class="n">train_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span>
-                                     <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-                                     <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
-                                     <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-                                      <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
-                                                          <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                                            <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
 
 
 <span class="n">valid_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
-                                     <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-                                     <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()])</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                                       <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                                            <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
 
 <span class="n">test_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
                                       <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-                                      <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()])</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                                            <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
 
 <span class="c1"># TODO: Load the datasets with ImageFolder</span>
 <span class="n">train_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">train_dir</span><span class="p">,</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">train_transforms</span><span class="p">)</span>
@@ -13244,138 +13252,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;cat_to_name.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">cat_to_name</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="n">cat_to_name</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;21&#39;: &#39;fire lily&#39;,
- &#39;3&#39;: &#39;canterbury bells&#39;,
- &#39;45&#39;: &#39;bolero deep blue&#39;,
- &#39;1&#39;: &#39;pink primrose&#39;,
- &#39;34&#39;: &#39;mexican aster&#39;,
- &#39;27&#39;: &#39;prince of wales feathers&#39;,
- &#39;7&#39;: &#39;moon orchid&#39;,
- &#39;16&#39;: &#39;globe-flower&#39;,
- &#39;25&#39;: &#39;grape hyacinth&#39;,
- &#39;26&#39;: &#39;corn poppy&#39;,
- &#39;79&#39;: &#39;toad lily&#39;,
- &#39;39&#39;: &#39;siam tulip&#39;,
- &#39;24&#39;: &#39;red ginger&#39;,
- &#39;67&#39;: &#39;spring crocus&#39;,
- &#39;35&#39;: &#39;alpine sea holly&#39;,
- &#39;32&#39;: &#39;garden phlox&#39;,
- &#39;10&#39;: &#39;globe thistle&#39;,
- &#39;6&#39;: &#39;tiger lily&#39;,
- &#39;93&#39;: &#39;ball moss&#39;,
- &#39;33&#39;: &#39;love in the mist&#39;,
- &#39;9&#39;: &#39;monkshood&#39;,
- &#39;102&#39;: &#39;blackberry lily&#39;,
- &#39;14&#39;: &#39;spear thistle&#39;,
- &#39;19&#39;: &#39;balloon flower&#39;,
- &#39;100&#39;: &#39;blanket flower&#39;,
- &#39;13&#39;: &#39;king protea&#39;,
- &#39;49&#39;: &#39;oxeye daisy&#39;,
- &#39;15&#39;: &#39;yellow iris&#39;,
- &#39;61&#39;: &#39;cautleya spicata&#39;,
- &#39;31&#39;: &#39;carnation&#39;,
- &#39;64&#39;: &#39;silverbush&#39;,
- &#39;68&#39;: &#39;bearded iris&#39;,
- &#39;63&#39;: &#39;black-eyed susan&#39;,
- &#39;69&#39;: &#39;windflower&#39;,
- &#39;62&#39;: &#39;japanese anemone&#39;,
- &#39;20&#39;: &#39;giant white arum lily&#39;,
- &#39;38&#39;: &#39;great masterwort&#39;,
- &#39;4&#39;: &#39;sweet pea&#39;,
- &#39;86&#39;: &#39;tree mallow&#39;,
- &#39;101&#39;: &#39;trumpet creeper&#39;,
- &#39;42&#39;: &#39;daffodil&#39;,
- &#39;22&#39;: &#39;pincushion flower&#39;,
- &#39;2&#39;: &#39;hard-leaved pocket orchid&#39;,
- &#39;54&#39;: &#39;sunflower&#39;,
- &#39;66&#39;: &#39;osteospermum&#39;,
- &#39;70&#39;: &#39;tree poppy&#39;,
- &#39;85&#39;: &#39;desert-rose&#39;,
- &#39;99&#39;: &#39;bromelia&#39;,
- &#39;87&#39;: &#39;magnolia&#39;,
- &#39;5&#39;: &#39;english marigold&#39;,
- &#39;92&#39;: &#39;bee balm&#39;,
- &#39;28&#39;: &#39;stemless gentian&#39;,
- &#39;97&#39;: &#39;mallow&#39;,
- &#39;57&#39;: &#39;gaura&#39;,
- &#39;40&#39;: &#39;lenten rose&#39;,
- &#39;47&#39;: &#39;marigold&#39;,
- &#39;59&#39;: &#39;orange dahlia&#39;,
- &#39;48&#39;: &#39;buttercup&#39;,
- &#39;55&#39;: &#39;pelargonium&#39;,
- &#39;36&#39;: &#39;ruby-lipped cattleya&#39;,
- &#39;91&#39;: &#39;hippeastrum&#39;,
- &#39;29&#39;: &#39;artichoke&#39;,
- &#39;71&#39;: &#39;gazania&#39;,
- &#39;90&#39;: &#39;canna lily&#39;,
- &#39;18&#39;: &#39;peruvian lily&#39;,
- &#39;98&#39;: &#39;mexican petunia&#39;,
- &#39;8&#39;: &#39;bird of paradise&#39;,
- &#39;30&#39;: &#39;sweet william&#39;,
- &#39;17&#39;: &#39;purple coneflower&#39;,
- &#39;52&#39;: &#39;wild pansy&#39;,
- &#39;84&#39;: &#39;columbine&#39;,
- &#39;12&#39;: &#34;colt&#39;s foot&#34;,
- &#39;11&#39;: &#39;snapdragon&#39;,
- &#39;96&#39;: &#39;camellia&#39;,
- &#39;23&#39;: &#39;fritillary&#39;,
- &#39;50&#39;: &#39;common dandelion&#39;,
- &#39;44&#39;: &#39;poinsettia&#39;,
- &#39;53&#39;: &#39;primula&#39;,
- &#39;72&#39;: &#39;azalea&#39;,
- &#39;65&#39;: &#39;californian poppy&#39;,
- &#39;80&#39;: &#39;anthurium&#39;,
- &#39;76&#39;: &#39;morning glory&#39;,
- &#39;37&#39;: &#39;cape flower&#39;,
- &#39;56&#39;: &#39;bishop of llandaff&#39;,
- &#39;60&#39;: &#39;pink-yellow dahlia&#39;,
- &#39;82&#39;: &#39;clematis&#39;,
- &#39;58&#39;: &#39;geranium&#39;,
- &#39;75&#39;: &#39;thorn apple&#39;,
- &#39;41&#39;: &#39;barbeton daisy&#39;,
- &#39;95&#39;: &#39;bougainvillea&#39;,
- &#39;43&#39;: &#39;sword lily&#39;,
- &#39;83&#39;: &#39;hibiscus&#39;,
- &#39;78&#39;: &#39;lotus lotus&#39;,
- &#39;88&#39;: &#39;cyclamen&#39;,
- &#39;94&#39;: &#39;foxglove&#39;,
- &#39;81&#39;: &#39;frangipani&#39;,
- &#39;74&#39;: &#39;rose&#39;,
- &#39;89&#39;: &#39;watercress&#39;,
- &#39;73&#39;: &#39;water lily&#39;,
- &#39;46&#39;: &#39;wallflower&#39;,
- &#39;77&#39;: &#39;passion flower&#39;,
- &#39;51&#39;: &#39;petunia&#39;}</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13531,7 +13417,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># only train the classifier parameters</span>
@@ -13539,7 +13425,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 
 <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-<span class="n">epochs</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">steps</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">print_every</span> <span class="o">=</span> <span class="mi">3</span>
@@ -13552,7 +13438,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">active_session</span><span class="p">():</span>
@@ -13603,6 +13489,94 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch 1/1.. Train Loss: 1.666.. Valid Loss: 1.431.. Valid Accuracy: 0.636..
+Epoch 1/1.. Train Loss: 1.914.. Valid Loss: 1.232.. Valid Accuracy: 0.691..
+Epoch 1/1.. Train Loss: 1.530.. Valid Loss: 1.212.. Valid Accuracy: 0.638..
+Epoch 1/1.. Train Loss: 1.624.. Valid Loss: 1.099.. Valid Accuracy: 0.709..
+Epoch 1/1.. Train Loss: 1.586.. Valid Loss: 1.043.. Valid Accuracy: 0.709..
+Epoch 1/1.. Train Loss: 1.553.. Valid Loss: 1.073.. Valid Accuracy: 0.694..
+Epoch 1/1.. Train Loss: 1.509.. Valid Loss: 0.987.. Valid Accuracy: 0.719..
+Epoch 1/1.. Train Loss: 1.402.. Valid Loss: 0.858.. Valid Accuracy: 0.745..
+Epoch 1/1.. Train Loss: 1.391.. Valid Loss: 0.833.. Valid Accuracy: 0.756..
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-24-046f459b50d6&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span>             optimizer<span class="ansi-blue-fg">.</span>zero_grad<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span> 
+<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg">             </span>log_ps <span class="ansi-blue-fg">=</span> model<span class="ansi-blue-fg">(</span>images<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>             loss <span class="ansi-blue-fg">=</span> criterion<span class="ansi-blue-fg">(</span>log_ps<span class="ansi-blue-fg">,</span> labels<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>             loss<span class="ansi-blue-fg">.</span>backward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torch/nn/modules/module.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *input, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    489</span>             result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_slow_forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    490</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 491</span><span class="ansi-red-fg">             </span>result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    492</span>         <span class="ansi-green-fg">for</span> hook <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>_forward_hooks<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    493</span>             hook_result <span class="ansi-blue-fg">=</span> hook<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">,</span> result<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torchvision-0.2.1-py3.6.egg/torchvision/models/vgg.py</span> in <span class="ansi-cyan-fg">forward</span><span class="ansi-blue-fg">(self, x)</span>
+<span class="ansi-green-intense-fg ansi-bold">     40</span> 
+<span class="ansi-green-intense-fg ansi-bold">     41</span>     <span class="ansi-green-fg">def</span> forward<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 42</span><span class="ansi-red-fg">         </span>x <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>features<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     43</span>         x <span class="ansi-blue-fg">=</span> x<span class="ansi-blue-fg">.</span>view<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">.</span>size<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     44</span>         x <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>classifier<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torch/nn/modules/module.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *input, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    489</span>             result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_slow_forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    490</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 491</span><span class="ansi-red-fg">             </span>result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    492</span>         <span class="ansi-green-fg">for</span> hook <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>_forward_hooks<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    493</span>             hook_result <span class="ansi-blue-fg">=</span> hook<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">,</span> result<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torch/nn/modules/container.py</span> in <span class="ansi-cyan-fg">forward</span><span class="ansi-blue-fg">(self, input)</span>
+<span class="ansi-green-intense-fg ansi-bold">     89</span>     <span class="ansi-green-fg">def</span> forward<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>         <span class="ansi-green-fg">for</span> module <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>_modules<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 91</span><span class="ansi-red-fg">             </span>input <span class="ansi-blue-fg">=</span> module<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     92</span>         <span class="ansi-green-fg">return</span> input
+<span class="ansi-green-intense-fg ansi-bold">     93</span> 
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torch/nn/modules/module.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *input, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    489</span>             result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_slow_forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    490</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 491</span><span class="ansi-red-fg">             </span>result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>forward<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>input<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    492</span>         <span class="ansi-green-fg">for</span> hook <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>_forward_hooks<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    493</span>             hook_result <span class="ansi-blue-fg">=</span> hook<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">,</span> result<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/conda/lib/python3.6/site-packages/torch/nn/modules/conv.py</span> in <span class="ansi-cyan-fg">forward</span><span class="ansi-blue-fg">(self, input)</span>
+<span class="ansi-green-intense-fg ansi-bold">    299</span>     <span class="ansi-green-fg">def</span> forward<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    300</span>         return F.conv2d(input, self.weight, self.bias, self.stride,
+<span class="ansi-green-fg">--&gt; 301</span><span class="ansi-red-fg">                         self.padding, self.dilation, self.groups)
+</span><span class="ansi-green-intense-fg ansi-bold">    302</span> 
+<span class="ansi-green-intense-fg ansi-bold">    303</span> 
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13614,45 +13588,38 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Do validation on the test set</span>
 
-<span class="n">test_epochs</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">test_steps</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">testing_running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">test_epochs</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">test_running_loss</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">test_accuracy</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">test_print_every</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
 <span class="k">with</span> <span class="n">active_session</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">testloader</span><span class="p">:</span>
-                <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1"># Moving the data to the default device</span>
-                <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
-                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">testloader</span><span class="p">:</span>
+            <span class="c1"># Moving the data to the default device</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-                <span class="n">log_ps</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-                <span class="n">test_loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">log_ps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-                <span class="n">test_running_loss</span> <span class="o">+=</span> <span class="n">test_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">log_ps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+            <span class="n">test_loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">log_ps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="n">test_running_loss</span> <span class="o">+=</span> <span class="n">test_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
                 
-                <span class="c1"># Calculate accuracy</span>
-                <span class="n">ps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_ps</span><span class="p">)</span>
-                <span class="n">top_p</span><span class="p">,</span> <span class="n">top_class</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">equals</span> <span class="o">=</span> <span class="n">top_class</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">top_class</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-                <span class="n">test_accuracy</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">equals</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">steps</span> <span class="o">%</span> <span class="n">test_print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Epoch {epoch + 1}/</span><span class="si">{epochs}</span><span class="s2">.. &quot;</span>
-                         <span class="n">f</span><span class="s2">&quot;Test Loss: {test_running_loss/len(testloader):.3f}.. &quot;</span>
-                         <span class="n">f</span><span class="s2">&quot;Test Accuracy: {test_accuracy/len(testloader):.3f}.. &quot;</span><span class="p">)</span>
-                    <span class="n">test_running_loss</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># Calculate accuracy</span>
+            <span class="n">ps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_ps</span><span class="p">)</span>
+            <span class="n">top_p</span><span class="p">,</span> <span class="n">top_class</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">equals</span> <span class="o">=</span> <span class="n">top_class</span> <span class="o">==</span> <span class="n">labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">top_class</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">test_accuracy</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">equals</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Epoch {epoch + 1}/</span><span class="si">{test_epochs}</span><span class="s2">.. &quot;</span>
+                  <span class="n">f</span><span class="s2">&quot;Test Loss: {test_running_loss/len(testloader):.3f}.. &quot;</span>
+                  <span class="n">f</span><span class="s2">&quot;Test Accuracy: {test_accuracy/len(testloader):.3f}.. &quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-            
+               
 </pre></div>
 
     </div>
@@ -13669,74 +13636,17 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch 1/2.. Test Loss: 0.810.. Test Accuracy: 0.130.. 
-Epoch 1/2.. Test Loss: 0.649.. Test Accuracy: 0.157.. 
-Epoch 1/2.. Test Loss: 1.029.. Test Accuracy: 0.084.. 
-Epoch 2/2.. Test Loss: 0.810.. Test Accuracy: 0.130.. 
-Epoch 2/2.. Test Loss: 0.649.. Test Accuracy: 0.157.. 
-Epoch 2/2.. Test Loss: 1.029.. Test Accuracy: 0.084.. 
+<pre>Epoch 1/1.. Test Loss: 0.137.. Test Accuracy: 0.075.. 
+Epoch 1/1.. Test Loss: 0.270.. Test Accuracy: 0.154.. 
+Epoch 1/1.. Test Loss: 0.398.. Test Accuracy: 0.232.. 
+Epoch 1/1.. Test Loss: 0.518.. Test Accuracy: 0.307.. 
+Epoch 1/1.. Test Loss: 0.644.. Test Accuracy: 0.388.. 
+Epoch 1/1.. Test Loss: 0.700.. Test Accuracy: 0.481.. 
+Epoch 1/1.. Test Loss: 0.838.. Test Accuracy: 0.554.. 
+Epoch 1/1.. Test Loss: 0.982.. Test Accuracy: 0.621.. 
+Epoch 1/1.. Test Loss: 1.000.. Test Accuracy: 0.732.. 
 </pre>
 </div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[85]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>VGG(
-  (features): Sequential(
-    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (1): ReLU(inplace)
-    (2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (3): ReLU(inplace)
-    (4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (5): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (6): ReLU(inplace)
-    (7): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (8): ReLU(inplace)
-    (9): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (10): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (11): ReLU(inplace)
-    (12): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (13): ReLU(inplace)
-    (14): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (15): ReLU(inplace)
-    (16): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (17): ReLU(inplace)
-    (18): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (19): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (20): ReLU(inplace)
-    (21): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (22): ReLU(inplace)
-    (23): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (24): ReLU(inplace)
-    (25): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (26): ReLU(inplace)
-    (27): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (28): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (29): ReLU(inplace)
-    (30): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (31): ReLU(inplace)
-    (32): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (33): ReLU(inplace)
-    (34): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (35): ReLU(inplace)
-    (36): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-  )
-  (classifier): Sequential(
-    (fc1): Linear(in_features=25088, out_features=600, bias=True)
-    (relu): ReLU()
-    (dropout): Dropout(p=0.15)
-    (fc2): Linear(in_features=600, out_features=102, bias=True)
-    (output): LogSoftmax()
-  )
-)</pre>
-</div>
-
 </div>
 
 </div>
@@ -13755,58 +13665,27 @@ Epoch 2/2.. Test Loss: 1.029.. Test Accuracy: 0.084..
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[76]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Sequential(
-  (fc1): Linear(in_features=25088, out_features=600, bias=True)
-  (relu): ReLU()
-  (dropout): Dropout(p=0.15)
-  (fc2): Linear(in_features=600, out_features=102, bias=True)
-  (output): LogSoftmax()
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Save the checkpoint </span>
 
-<span class="n">checkpoint</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;input_size&#39;</span><span class="p">:</span> <span class="mi">25088</span><span class="p">,</span>
-             <span class="s1">&#39;output_size&#39;</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span>
-             <span class="s1">&#39;sequential&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="p">,</span>
-             <span class="s1">&#39;state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
-             <span class="s1">&#39;optimizer_state&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">,</span>
-             <span class="s1">&#39;epoch_size&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>
+    <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epochs</span><span class="p">,</span>
+    <span class="s1">&#39;state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+    <span class="s1">&#39;classifier&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="p">,</span>
+    <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">,</span>
+    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">running_loss</span>
+<span class="p">},</span> <span class="s1">&#39;checkpoint.pth&#39;</span><span class="p">)</span>
 
-<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s1">&#39;checkpoint.pth&#39;</span><span class="p">)</span>
+<span class="c1">#checkpoint = {&#39;input_size&#39;: 25088,</span>
+ <span class="c1">#            &#39;output_size&#39;: 102,</span>
+  <span class="c1">#           &#39;sequential&#39;: model.classifier,</span>
+   <span class="c1">#          &#39;state_dict&#39;: model.state_dict(),</span>
+    <span class="c1">#         &#39;optimizer_state&#39;: optimizer.state_dict,</span>
+     <span class="c1">#        &#39;epoch_size&#39;: epochs}</span>
+
+<span class="c1">#torch.save(checkpoint, &#39;checkpoint.pth&#39;)</span>
 
 <span class="c1">#model.class_to_idx = train_data[&#39;train&#39;].class_to_idx</span>
 </pre></div>
@@ -13826,18 +13705,23 @@ Epoch 2/2.. Test Loss: 1.029.. Test Accuracy: 0.084..
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Write a function that loads a checkpoint and rebuilds the model</span>
 
 <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TheModelClass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">TheOptimizerClass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
     <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;state_dict&#39;</span><span class="p">])</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;sequential&#39;</span><span class="p">]</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optimizer_state&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;classifier&#39;</span><span class="p">]</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">])</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span>
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
     
-    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">running_loss</span>
 </pre></div>
 
     </div>
@@ -13867,14 +13751,21 @@ Epoch 2/2.. Test Loss: 1.029.. Test Accuracy: 0.084..
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Scales, crops, and normalizes a PIL image for a PyTorch model,</span>
 <span class="sd">        returns an Numpy array</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+                          <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+                           <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                          <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                              <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
+    <span class="n">np_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     
+    <span class="k">return</span> <span class="n">np_image</span>
     <span class="c1"># TODO: Process a PIL image for use in a PyTorch model</span>
 </pre></div>
 
@@ -13893,7 +13784,7 @@ Epoch 2/2.. Test Loss: 1.029.. Test Accuracy: 0.084..
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
